@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DJ Meat Flipper & 14,000 Beef Patties</title>
+
+  <style>
+    /* --- Global --- */
+    body { 
+      margin: 0; 
+      font-family: Arial, sans-serif; 
+      color: #fff; 
+      overflow-x: hidden;
+      position: relative;
+      background: #111;
+    }
+
+    /* --- Background --- */
+    .bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('images/fire.jpg') no-repeat center center;
+      background-size: cover;
+      z-index: -5;
+      animation: bgFlicker 5s infinite alternate;
+    }
+
+    @keyframes bgFlicker {
+      0% { opacity: 0.9; }
+      50% { opacity: 1; }
+      100% { opacity: 0.95; }
+    }
+
+    .smoke {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 200%;
+      height: 200%;
+      pointer-events: none;
+      background-repeat: repeat;
+      opacity: 0.23;
+      animation: smokeMove 25s linear infinite;
+      z-index: -3;
+    }
+
+    .smoke.layer2 {
+      opacity: 0.15;
+      animation-duration: 40s;
+      animation-direction: reverse;
+    }
+
+    @keyframes smokeMove {
+      0% { transform: translate(-200px, 200px) scale(1.6); }
+      50% { transform: translate(200px, -100px) scale(1.7); }
+      100% { transform: translate(-200px, 200px) scale(1.6); }
+    }
+
+    /* --- Content --- */
+    header, .albums, footer { position: relative; z-index: 10; }
+
+    header { 
+      padding: 60px 20px; 
+      background: rgba(0,0,0,0.6);
+      text-align: center; 
+      animation: headerFlicker 4s infinite alternate;
+    }
+
+    @keyframes headerFlicker {
+      0% { background: rgba(0,0,0,0.55); }
+      50% { background: rgba(0,0,0,0.7); }
+      100% { background: rgba(0,0,0,0.6); }
+    }
+
+    /* --- Fire-themed Title --- */
+    header h1 {
+      margin: 0;
+      font-size: 3rem;
+      font-family: 'Impact', sans-serif;
+      background: linear-gradient(90deg, #ff4000, #ffbf00, #ff0000, #ff8000);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 5px #ff4000, 0 0 10px #ff8000, 0 0 20px #ffbf00;
+      animation: flicker 1.5s infinite alternate;
+    }
+
+    @keyframes flicker {
+      0% { text-shadow: 0 0 5px #ff4000, 0 0 10px #ff8000, 0 0 20px #ffbf00; }
+      25% { text-shadow: 0 0 10px #ff4000, 0 0 20px #ff8000, 0 0 30px #ffbf00; }
+      50% { text-shadow: 0 0 5px #ff4000, 0 0 15px #ff8000, 0 0 25px #ffbf00; }
+      75% { text-shadow: 0 0 8px #ff4000, 0 0 18px #ff8000, 0 0 28px #ffbf00; }
+      100% { text-shadow: 0 0 5px #ff4000, 0 0 10px #ff8000, 0 0 20px #ffbf00; }
+    }
+
+    header p {
+      font-size: 1.2rem;
+      color: #ddd;
+      animation: subFlicker 2s infinite alternate;
+    }
+
+    @keyframes subFlicker {
+      0% { text-shadow: 0 0 2px #fff; opacity: 0.9; }
+      50% { text-shadow: 0 0 5px #ffbf00; opacity: 1; }
+      100% { text-shadow: 0 0 3px #ff8000; opacity: 0.95; }
+    }
+
+    /* --- Album Slider --- */
+    .slider-container { position: relative; }
+
+    .albums {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      gap: 20px;
+      padding: 40px 20px;
+      scroll-behavior: smooth;
+      scroll-snap-type: x mandatory;
+    }
+
+    .albums::-webkit-scrollbar { display: none; }
+    .albums { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* --- Album Cards --- */
+    .album {
+      scroll-snap-align: start;
+      background: rgba(0,0,0,0.7);
+      border-radius: 12px;
+      width: 280px;
+      padding: 15px;
+      box-shadow: 0 0 10px #000;
+      transition: transform 0.3s, box-shadow 0.3s;
+      flex: 0 0 auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .album:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #0af;
+    }
+
+    .album img { width: 100%; border-radius: 10px; }
+    .album h3 { margin: 10px 0 5px 0; font-size: 1.3rem; }
+    .album p { font-size: 0.95rem; color: #ccc; margin: 0 0 10px 0; }
+
+    a.spotify-link {
+      display: block;
+      margin-top: 10px;
+      padding: 8px 12px;
+      background: #0af;
+      color: #000;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a.spotify-link:hover {
+      background: #00d;
+      color: #fff;
+    }
+
+    /* --- Album Fire Animations --- */
+    .album::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 12px;
+      pointer-events: none;
+      background: radial-gradient(circle, rgba(255,150,0,0.2) 0%, rgba(255,50,0,0) 70%);
+      opacity: 0.6;
+      animation: emberGlow 2s infinite alternate ease-in-out;
+    }
+
+    @keyframes emberGlow {
+      0% { opacity: 0.4; transform: scale(1) translate(0,0); }
+      50% { opacity: 0.6; transform: scale(1.02) translate(1px, -1px); }
+      100% { opacity: 0.5; transform: scale(1) translate(0,0); }
+    }
+
+    .album .inner-particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      pointer-events: none;
+      background: radial-gradient(circle, rgba(255,180,50,0.9) 0%, rgba(255,100,0,0.6) 70%, rgba(255,50,0,0) 100%);
+      animation: albumEmber 1.5s infinite ease-out;
+      top: 80%;
+      left: 50%;
+      transform: translate(-50%, 0);
+    }
+
+    @keyframes albumEmber {
+      0% { transform: translate(-50%, 0) scale(0.6); opacity: 1; }
+      50% { transform: translate(calc(-50% + 5px), -15px) scale(0.8); opacity: 0.7; }
+      100% { transform: translate(calc(-50% - 5px), -30px) scale(0.5); opacity: 0; }
+    }
+
+    /* --- Footer --- */
+    footer { 
+      text-align: center; 
+      padding: 20px; 
+      background: rgba(0,0,0,0.7); 
+      color: #ccc; 
+      margin-top: 50px; 
+    }
+
+    /* --- Slider Arrows --- */
+    .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      border: none;
+      font-size: 2rem;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 50%;
+      z-index: 15;
+      transition: background 0.3s;
+    }
+    .arrow:hover { background: rgba(0,0,0,0.9); }
+    .arrow.left { left: 10px; }
+    .arrow.right { right: 10px; }
+
+    /* --- Spotify iframe --- */
+    .album iframe { margin-top: 10px; border-radius: 8px; width: 100%; height: 80px; }
+
+    /* --- Responsive --- */
+    @media (max-width: 768px) {
+      header h1 { font-size: 2rem; }
+      header p { font-size: 0.9rem; }
+      .album { width: 200px; padding: 8px; }
+      .album h3 { font-size: 1rem; }
+      .album p { font-size: 0.85rem; }
+      .arrow { display: none; }
+      .smoke { width: 150%; height: 150%; opacity: 0.15; }
+      .album iframe { height: 100px; }
+    }
+
+    /* --- Cursor particles --- */
+    .particle { position: absolute; pointer-events: none; border-radius: 50%; will-change: transform, opacity; z-index: 20; }
+
+    @keyframes emberFloat {
+      0% { opacity: 1; transform: scale(var(--scale-start)) translate(0,0) rotate(0deg); }
+      100% { opacity: 0; transform: scale(var(--scale-end)) translate(var(--x), var(--y)) rotate(var(--rotation)); }
+    }
+  </style>
+
+</head>
+<body>
+
+  <!-- Fire background -->
+
+  <div class="bg"></div>
+
+  <!-- Smoke layers -->
+
+  <div class="smoke" style="background-image: url('images/smoke1.png');"></div>
+  <div class="smoke layer2" style="background-image: url('images/smoke2.png');"></div>
+
+  <header>
+    <h1>DJ Meat Flipper & 14,000 Beef Patties</h1>
+    <p>Experience the sizzling beats and juicy drops from our albums. Click an album to listen on Spotify!</p>
+  </header>
+
+  <div class="slider-container">
+    <!-- Left Arrow -->
+    <button class="arrow left" onclick="scrollAlbums(-1)">&#10094;</button>
+
+```
+<section class="albums" id="albums">
+  <div class="album">
+    <img src="images/beatthemeat.jpg" alt="Beat the Meat">
+    <h3>Beat the Meat</h3>
+    <p>The beginning of the DJ Meat Flipper saga rises with this EP.</p>
+    <a class="spotify-link" href="https://open.spotify.com/album/26GOntTsiVVheEyyU11zxu?si=vpxO32nLRNOsAmIZRi9s8g" target="_blank">Listen on Spotify</a>
+    <iframe src="https://open.spotify.com/embed/album/26GOntTsiVVheEyyU11zxu?utm_source=generator" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+  </div>
+
+  <div class="album">
+    <img src="images/greasygrillspill1.jpg" alt="Greasy Grill Spill">
+    <h3>Greasy Grill Spill</h3>
+    <p>The follow-up EP with punchy and melodic beats & 14,000 beef patties.</p>
+    <a class="spotify-link" href="https://open.spotify.com/album/spotify_album_link_2" target="_blank">Listen on Spotify</a>
+    <iframe src="https://open.spotify.com/embed/album/spotify_album_link_2" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+  </div>
+
+  <div class="album">
+    <img src="images/alienationism1.jpg" alt="Alienationism">
+    <h3>Alienationism</h3>
+    <p>This second album tells the story as the planet falls under extraterrestrial rule.</p>
+    <a class="spotify-link" href="https://open.spotify.com/album/spotify_album_link_3" target="_blank">Listen on Spotify</a>
+    <iframe src="https://open.spotify.com/embed/album/spotify_album_link_3" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+  </div>
+
+  <div class="album">
+    <img src="images/newalbum.jpg" alt="Aquarium of Cows">
+    <h3>Aquarium of Cows</h3>
+    <p>The third album brings cows to the aquarium and opens the road for new ideas.</p>
+    <a class="spotify-link" href="https://open.spotify.com/album/new_album_link_here" target="_blank">Listen on Spotify</a>
+    <iframe src="https://open.spotify.com/embed/album/new_album_link_here" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+  </div>
+</section>
+
+<!-- Right Arrow -->
+<button class="arrow right" onclick="scrollAlbums(1)">&#10095;</button>
+
+  </div>
+
+  <footer>
+    © 2025 DJ Meat Flipper & 14,000 Beef Patties | All Rights Reserved
+  </footer>
+
+  <script>
+    // Album scrolling
+    const albums = document.getElementById('albums');
+    function scrollAlbums(direction) {
+      const scrollAmount = 300;
+      albums.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+    }
+
+    // Fire-themed cursor particles
+    document.addEventListener('mousemove', (e) => {
+      const particleCount = 4;
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+
+        const size = Math.random() * 6 + 4;
+        particle.style.width = size + 'px';
+        particle.style.height = size + 'px';
+
+        const r = 255;
+        const g = Math.floor(Math.random() * 100 + 50);
+        particle.style.background = `radial-gradient(circle, rgba(${r},${g},0,0.9) 0%, rgba(${r},${g/2},0,0.7) 70%, rgba(${r},${g/4},0,0) 100%)`;
+
+        particle.style.left = (e.pageX + (Math.random()*10 - 5)) + 'px';
+        particle.style.top = (e.pageY + (Math.random()*10 - 5)) + 'px';
+
+        const x = (Math.random() * 40 - 20) + 'px';
+        const y = (-Math.random() * 60 - 20) + 'px';
+        const rotation = (Math.random() * 60 - 30) + 'deg';
+        particle.style.setProperty('--x', x);
+        particle.style.setProperty('--y', y);
+        particle.style.setProperty('--rotation', rotation);
+
+        particle.style.setProperty('--scale-start', Math.random() * 0.6 + 0.7);
+        particle.style.setProperty('--scale-end', Math.random() * 0.5 + 0.3);
+
+        particle.style.animation = `emberFloat 1s forwards ease-out`;
+
+        document.body.appendChild(particle);
+
+        setTimeout(() => { particle.remove(); }, 1000);
+      }
+    });
+
+    // Inner ember particles for albums
+    document.querySelectorAll('.album').forEach(album => {
+      for (let i = 0; i < 3; i++) {
+        const ember = document.createElement('div');
+        ember.classList.add('inner-particle');
+        ember.style.left = Math.random() * 80 + 10 + '%';
+        ember.style.animationDelay = Math.random() + 's';
+        ember.style.animationDuration = 1.2 + Math.random() * 0.8 + 's';
+        album.appendChild(ember);
+      }
+    });
+  </script>
+
+</body>
+</html>
